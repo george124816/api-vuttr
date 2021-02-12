@@ -5,7 +5,6 @@ import (
 	"github.com/george124816/api-vuttr/internal/pkg/models"
 	"database/sql"
 	"github.com/gin-gonic/gin"
-	"github.com/george124816/my-own-migration/migrate"
 	"log"
 	"strconv"
 )
@@ -15,19 +14,21 @@ var handle *models.BaseHandler
 
 func init(){
 	database = db.ConnectDB()
+	Migrate(database)
 	handle = models.NewBaseHandler(database)
-	migrate.Migrate(database, 2)
-
 }
 
-func Hello(c *gin.Context){
-	c.JSON(200, "Hello")
-}
-
+// InsertTool godoc
+// @Summary Cadastra Ferramenta
+// @Description Cadastra uma nova ferramenta
+// @Accept json
+// @Param user body models.Tool true "Tool"
+// @Success 201 {object} models.Tool
+// @Error 400
+// @Router /tool/ [post]
 func InsertTool(c *gin.Context){
 	var T models.Tool
 	c.Bind(&T)
-	log.Println(T)
 	if T.Title != "" && T.Link != "" && T.Descrip != "" {
 		T = handle.InsertTool(T)
 		c.JSON(201, T)
@@ -36,6 +37,13 @@ func InsertTool(c *gin.Context){
 	c.JSON(400, gin.H{"error": "Fields are empty"})
 }
 
+// GetTools godoc
+// @Summary Lista Ferramentas
+// @Description Lista todas as ferramentas ou ferramentas pela tag
+// Produce json
+// @Param tag query string false "search tool by tag"
+// @Success 200 200 {array} models.Tool
+// @Router /tools [get]
 func GetTools(c *gin.Context){
 	T := handle.GetTools()
 	var TR []models.Tool
@@ -55,6 +63,13 @@ func GetTools(c *gin.Context){
 	}
 }
 
+// DeleteTool godoc
+// @Summary Deleta Ferramenta
+// @Description Deleta uma Ferramenta pelo Id
+// @Accept json
+// @Param id path int true "Tool ID"
+// @Success 200 
+// @Router /tools/{id} [delete]
 func DeleteTool(c *gin.Context){
 	id, err := strconv.Atoi(c.Param("id"))
 	if err != nil {

@@ -1,0 +1,76 @@
+basePath: /api/v1
+definitions:
+  models.Tool:
+    properties:
+      Description:
+        type: string
+      Id:
+        type: integer
+      Link:
+        type: string
+      Title:
+        type: string
+      tags:
+        items:
+          type: string
+        type: array
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: georgerodrigues@live.com.au
+    name: George Rodrigues
+    url: twitter.com/george124816
+  description: Aplicação para gerenciar ferramentas com seus respectivos nomes, links,
+    descrições e tags.
+  title: Very Useful Tools to Remember API
+  version: "1.0"
+paths:
+  /tool/:
+    post:
+      consumes:
+      - application/json
+      description: Cadastra uma nova ferramenta
+      parameters:
+      - description: Tool
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.Tool'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Tool'
+      summary: Cadastra Ferramenta
+  /tools:
+    get:
+      description: Lista todas as ferramentas ou ferramentas pela tag
+      parameters:
+      - description: search tool by tag
+        in: query
+        name: tag
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: "200"
+      summary: Lista Ferramentas
+  /tools/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleta uma Ferramenta pelo Id
+      parameters:
+      - description: Tool ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: ""
+      summary: Deleta Ferramenta
+swagger: "2.0"

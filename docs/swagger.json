@@ -1,0 +1,115 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Aplicação para gerenciar ferramentas com seus respectivos nomes, links, descrições e tags.",
+        "title": "Very Useful Tools to Remember API",
+        "contact": {
+            "name": "George Rodrigues",
+            "url": "twitter.com/george124816",
+            "email": "georgerodrigues@live.com.au"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:3000",
+    "basePath": "/api/v1",
+    "paths": {
+        "/tool/": {
+            "post": {
+                "description": "Cadastra uma nova ferramenta",
+                "consumes": [
+                    "application/json"
+                ],
+                "summary": "Cadastra Ferramenta",
+                "parameters": [
+                    {
+                        "description": "Tool",
+                        "name": "user",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Tool"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Tool"
+                        }
+                    }
+                }
+            }
+        },
+        "/tools": {
+            "get": {
+                "description": "Lista todas as ferramentas ou ferramentas pela tag",
+                "summary": "Lista Ferramentas",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "search tool by tag",
+                        "name": "tag",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "200"
+                        }
+                    }
+                }
+            }
+        },
+        "/tools/{id}": {
+            "delete": {
+                "description": "Deleta uma Ferramenta pelo Id",
+                "consumes": [
+                    "application/json"
+                ],
+                "summary": "Deleta Ferramenta",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Tool ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Tool": {
+            "type": "object",
+            "properties": {
+                "Description": {
+                    "type": "string"
+                },
+                "Id": {
+                    "type": "integer"
+                },
+                "Link": {
+                    "type": "string"
+                },
+                "Title": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
